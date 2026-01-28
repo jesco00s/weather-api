@@ -6,12 +6,15 @@ meta {
 
 post {
   url: {{HOST_URL}}/weather
-  body: none
+  body: json
   auth: inherit
 }
 
 body:json {
-  {}
+  {
+    "latitude": 39.7456,
+    "longitude": -97.0892
+  }
 }
 
 tests {
