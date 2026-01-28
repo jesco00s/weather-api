@@ -1,0 +1,10 @@
+# Binaries
+/bin/
+*.exe
+*.out
+
+# VS Code
+.vscode/
+
+# OS junk
+.DS_Store
