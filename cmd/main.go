@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/jesco00s/weather-api/weather"
 )
 
 func main() {
@@ -11,7 +13,7 @@ func main() {
 	var routes = []string{weatherPath}
 	port := ":8080"
 
-	http.HandleFunc(weatherPath, weatherHandler)
+	http.HandleFunc(weatherPath, weather.WeatherHandler)
 
 	fmt.Printf("Server starting (%s)\n", port)
 	fmt.Println("Routes:")
@@ -21,8 +23,4 @@ func main() {
 
 	fmt.Println("Ready")
 	log.Fatal(http.ListenAndServe(port, nil))
-}
-
-func weatherHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("success"))
 }
