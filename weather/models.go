@@ -6,10 +6,10 @@ type Coordinates struct {
 }
 
 type PointResponse struct {
-	Properties PropertiesResponse `json:"properties"`
+	Properties Grid `json:"properties"`
 }
 
-type PropertiesResponse struct {
+type Grid struct {
 	GridX int `json:"gridX"`
 	GridY int `json:"gridY"`
 }

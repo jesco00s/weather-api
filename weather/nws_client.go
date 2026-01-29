@@ -11,13 +11,13 @@ import (
 
 const nationalWeatherPointsURL = "https://api.weather.gov/points/%f,%f"
 
-func FetchPoints(ctx context.Context, coords Coordinates) (PointResponse, error) {
+func FetchPoints(ctx context.Context, coords Coordinates) (Grid, error) {
 	var pointResponse PointResponse
 	var url = fmt.Sprintf(nationalWeatherPointsURL, coords.Latitude, coords.Longitude)
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
-		return pointResponse, err
+		return Grid{}, err
 	}
 
 	req.Header.Set("Accept", "application/geo+json")
@@ -25,20 +25,20 @@ func FetchPoints(ctx context.Context, coords Coordinates) (PointResponse, error)
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return pointResponse, err
+		return Grid{}, err
 	}
 
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		b, _ := io.ReadAll(resp.Body)
-		return pointResponse, fmt.Errorf("nws points request failed: status=%s body=%s", resp.Status, string(b))
+		return Grid{}, fmt.Errorf("nws points request failed: status=%s body=%s", resp.Status, string(b))
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&pointResponse)
 	if err != nil {
-		return pointResponse, fmt.Errorf("failed to decode nws points response: %w ", err)
+		return Grid{}, fmt.Errorf("failed to decode nws points response: %w ", err)
 	}
 
-	return pointResponse, nil
+	return pointResponse.Properties, nil
 }
