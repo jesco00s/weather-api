@@ -33,7 +33,12 @@ func getWeather(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Return the weather data as JSON
+	forecast, errForecast := FetchForecast(r.Context(), points)
+	if errForecast != nil {
+		http.Error(w, errForecast.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(points)
+	json.NewEncoder(w).Encode(forecast)
 }
