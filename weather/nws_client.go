@@ -72,6 +72,20 @@ func FetchForecast(ctx context.Context, grid Grid) (WeatherResponse, error) {
 		return WeatherResponse{}, fmt.Errorf("failed to decode nws forecast response: %w ", err)
 	}
 
-	//todo need to set the WeatherResponse
-	return WeatherResponse{}, nil
+	return getForecast(forecastResponse.Properties.Periods)
+}
+
+func getForecast(periods []Period) (WeatherResponse, error) {
+	var weatherResponse WeatherResponse
+
+	if periods[0].Temperature >= 80 {
+		weatherResponse.TemperatureDescription = "hot"
+	} else if periods[0].Temperature >= 60 {
+		weatherResponse.TemperatureDescription = "moderate"
+	} else {
+		weatherResponse.TemperatureDescription = "cold"
+	}
+	weatherResponse.ShortForecast = periods[0].ShortForecast
+
+	return weatherResponse, nil
 }

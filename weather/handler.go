@@ -2,7 +2,6 @@ package weather
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -24,8 +23,6 @@ func getWeather(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
-	fmt.Printf("Latitude: %f, Longitude: %f\n", coords.Latitude, coords.Longitude)
 
 	points, err := FetchPoints(r.Context(), coords)
 	if err != nil {
